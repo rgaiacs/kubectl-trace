@@ -39,8 +39,10 @@ fetch_generic_linux_sources()
   # 4.19.76-linuxkit -> 4.19.76
   # 4.14.154-128.181.amzn2.x86_64 -> 4.14.154
   # 4.19.76+gcp-something -> 4.19.76
-  kernel_version="$(echo "${KERNEL_VERSION}" | awk -vFS='[-+]' '{ print $1 }')"
-  major_version="$(echo "${KERNEL_VERSION}" | awk -vFS=. '{ print $1 }')"
+  # 6.6.87.2-microsoft-standard-WSL2 -> 6.6.87
+  raw_kernel_version="$(echo "${KERNEL_VERSION}" | awk -vFS='[-+]' '{ print $1 }')"
+  kernel_version="$(echo "${raw_kernel_version}" | awk -vFS=. '{ print $1 "." $2 "." $3 }')"
+  major_version="$(echo "${raw_kernel_version}" | awk -vFS=. '{ print $1 }')"
 
   # Remove the '.0' as the initial kernel major release isn't published with a patch number.
   if [[ $kernel_version == *.0 ]]; then
